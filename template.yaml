@@ -43,4 +43,13 @@ Resources:
     Properties:
       GroupName: "theSecurityGroup" 
       GroupDescription: "- Un **grupo de seguridad** que permita tráfico HTTP (puerto 80)."
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0  # Permite tráfico desde cualquier origen (público)
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0  # Permite tráfico de salida a cualquier destino
+
       
