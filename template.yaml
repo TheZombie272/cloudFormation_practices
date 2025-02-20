@@ -3,6 +3,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Trabajo Práctico: Desplegando Infraestructura con CloudFormation"
 
 Parameters:
+
   pVersioning:
     Type: String
     Description: "Seleccione activar o desactivar el versionamiento"
@@ -10,7 +11,6 @@ Parameters:
       - Enabled
       - Suspended
   
-
   pAMI:
     Type: AWS::EC2::Image::Id
     Description: "ID de la imagen AMI a utilizar"
@@ -19,7 +19,14 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Description: "ID de la subred donde se lanzará la instancia EC2"
 
-  
+  pInstanceType:
+    Type: String
+    Description: "Tipo de instancia EC2 a lanzar"
+    Default: "t2.micro"
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
 
 Resources:
   rS3Bucket:
@@ -50,9 +57,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: 
-        Ref: InstanceType
-      KeyName: 
-        Ref: KeyName
+        Ref: pInstanceType
       ImageId: 
         Ref: pAMI
       NetworkInterfaces:
