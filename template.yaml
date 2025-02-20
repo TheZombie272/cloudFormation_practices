@@ -33,7 +33,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName:  
-        fn::Sub: "thebucket-${AWS::AccountId}-${AWS::Region}"  # Nombre único
+        Fn::Sub: "thebucket-${AWS::AccountId}-${AWS::Region}"  # Nombre único
       VersioningConfiguration:
         Status: 
           Ref: pVersioning  
