@@ -10,9 +10,6 @@ Parameters:
       - Enabled
       - Suspended
   
-  pIAMBucketUser: 
-    Type: AWS::IAM:USER
-    Description: "Usuario IAM con acceso al bucket"
 
   pAMI:
     Type: AWS::EC2::Image::Id
