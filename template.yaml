@@ -89,3 +89,39 @@ Resources:
           sudo apt install -y apache2
           sudo systemctl start apache2
           sudo systemctl enable apache2
+  
+
+  rIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EC2Role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+
+  rIAMPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: MyEC2Policy
+      Roles:
+        - !Ref rIAMRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:GetObject
+              - cloudwatch:PutMetricData
+            Resource: "*"
+
+  rInstanceProfileEc2:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: rEC2Instance
+      Roles:
+        - Ref: rIAMRole
