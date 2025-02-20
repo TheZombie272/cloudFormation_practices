@@ -1,0 +1,9 @@
+ aws cloudformation validate-template --template-body file://template.yaml
+
+aws cloudformation create-stack --stack-name MiStack \
+  --template-body file://template.yaml \
+  --parameters ParameterKey=pVersioning,ParameterValue=Enabled \
+               ParameterKey=pAMI,ParameterValue=ami-0c518311db5640eff \
+               ParameterKey=pSubnetId,ParameterValue=subnet-0453628525b1ec5d6 \
+               ParameterKey=pInstanceType,ParameterValue=t2.micro \
+  --capabilities CAPABILITY_NAMED_IAM
