@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Trabajo Práctico: Desplegando Infraestructura con CloudFormation"
+
+Parameters:
+  pVersioning:
+    Type: String
+    Description: "Seleccione activar o desactivar el versionamiento"
+    AllowedValues:
+      - Enabled
+      - Suspended
+  
+  pIAMBucketUser: 
+    Type: AWS::IAM:USER
+    Description: "Usuario IAM con acceso al bucket"
+
+Resources:
+  rS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:  
+        fn::Sub: "thebucket-${AWS::AccountId}-${AWS::Region}"  # Nombre único
+      VersioningConfiguration:
+        Status: 
+          Ref: pVersioning  
+
+  rS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: 
+        Ref: rS3Bucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal: 
+              AWS: 
+                fn::Sub: "arn:aws:iam::${AWS::AccountId}:user/${IAMUser}" # Usuario con acceso al bucket
+            Action: "s3:*"
+            Resource: !Sub "arn:aws:s3:::${rS3Bucket}/*"
+  
+  rEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "theSecurityGroup" 
+      GroupDescription: "- Un **grupo de seguridad** que permita tráfico HTTP (puerto 80)."
+      
